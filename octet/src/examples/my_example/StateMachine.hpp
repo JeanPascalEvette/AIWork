@@ -1,4 +1,5 @@
-#include "State.hpp"
+#ifndef STATEMACHINE_HPP
+#define STATEMACHINE_HPP
 namespace octet {
 
 	template <class A> class StateMachine {
@@ -24,3 +25,5 @@ namespace octet {
 
 	};
 }
+
+#endif

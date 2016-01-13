@@ -1,3 +1,7 @@
+#ifndef STATE_HPP
+#define STATE_HPP
+
+#include "StateMachine.hpp"
 
 namespace octet {
 	template <class A> class State {
@@ -11,7 +15,7 @@ namespace octet {
 	};
 
 
-	template <class A> class ScatterState : State<A> {
+	template <class A> class ScatterState : public State<A> {
 	public:
 		ScatterState<A>() {}
 		void execute(A agent, StateMachine sm)
@@ -32,7 +36,7 @@ namespace octet {
 	private:
 	};
 
-	template <class A> class AttackState : State<A> {
+	template <class A> class AttackState : public State<A> {
 	public:
 		AttackState<A>() {}
 		void execute(A agent, StateMachine sm)
@@ -53,7 +57,7 @@ namespace octet {
 	private:
 	};
 
-	template <class A> class ScaredState : State<A> {
+	template <class A> class ScaredState : public State<A> {
 	public:
 		ScaredState<A>() {}
 		void execute(A agent, StateMachine sm)
@@ -73,3 +77,4 @@ namespace octet {
 	};
 
 }
+#endif

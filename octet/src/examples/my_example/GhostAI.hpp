@@ -1,3 +1,7 @@
+#ifndef GHOSTAI_HPP
+#define GHOSTAI_HPP
+
+#include "State.hpp"
 #include "StateMachine.hpp"
 namespace octet {
 	class GhostAI {
@@ -20,7 +24,7 @@ namespace octet {
 		bool isAttackWave()
 		{
 			int randNum = rand() % 100;
-			if (rand < 33) return true;
+			if (randNum < 33) return true;
 			return false;
 		}
 
@@ -30,3 +34,4 @@ namespace octet {
 		time_t startScared;
 	};
 }
+#endif

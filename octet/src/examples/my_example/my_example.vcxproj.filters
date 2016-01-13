@@ -428,6 +428,9 @@
       <Filter>containers</Filter>
     </ClInclude>
     <ClInclude Include="my_example.h" />
+    <ClInclude Include="GhostAI.hpp" />
+    <ClInclude Include="State.hpp" />
+    <ClInclude Include="StateMachine.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\resources\mesh_builder.inl">
