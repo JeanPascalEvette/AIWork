@@ -1,37 +1,39 @@
 #ifndef GHOSTAI_HPP
 #define GHOSTAI_HPP
 
-#include "State.hpp"
 #include "StateMachine.hpp"
-namespace octet {
 	class GhostAI {
 	public:
 		GhostAI() {
-			fsm = StateMachine<GhostAI>(this);
-			startScared = 0;
+			fsm = StateMachine<GhostAI>();
+			startScatter = 0;
 		}
 		void update() {
-			if (1)
-			{
-				fsm.changeState(ScaredState<GhostAI>());
-				startScared = clock();
-			}
-			if (startScared + 3000 < clock())
-				fsm.changeState(AttackState<GhostAI>());
+			if (fsm.getAgent() == nullptr)
+				fsm.setAgent(this);
 			fsm.update();
 		}
 
 		bool isAttackWave()
 		{
+			if (startScatter + 3000 > clock())
+			{
+				return false;
+			}
+			else if (startScatter + 13000 > clock())
+			{
+				return true;
+			}
+			
 			int randNum = rand() % 100;
 			if (randNum < 33) return true;
+			startScatter = clock();
 			return false;
 		}
 
 
 	private:
 		StateMachine<GhostAI> fsm;
-		time_t startScared;
+		time_t startScatter;
 	};
-}
 #endif

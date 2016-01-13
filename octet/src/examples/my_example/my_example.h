@@ -15,6 +15,7 @@ namespace octet {
     ref<visual_scene> app_scene;
 
 	GhostAI myAI;
+	time_t lastAIIter;
 
   public:
     /// this is called when we construct the class before everything is initialised.
@@ -31,7 +32,7 @@ namespace octet {
       scene_node *node = new scene_node();
       app_scene->add_child(node);
       app_scene->add_mesh_instance(new mesh_instance(node, box, red));
-
+	  lastAIIter = clock();
     }
 
     /// this is called to draw the world
@@ -42,9 +43,13 @@ namespace octet {
 
       // update matrices. assume 30 fps.
       app_scene->update(1.0f/30);
+	  
 
-	  myAI.update();
-
+	  if (lastAIIter + 1000 < clock())
+	  {
+		  myAI.update();
+		  lastAIIter = clock();
+	  }
 	  
 
 
