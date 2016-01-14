@@ -24,14 +24,14 @@ namespace octet {
 
     /// this is called once OpenGL is initialized
     void app_init() {
-      app_scene =  new visual_scene();
-      app_scene->create_default_camera_and_lights();
+      //app_scene =  new visual_scene();
+      //app_scene->create_default_camera_and_lights();
 	  myAI = GhostAI();
-      material *red = new material(vec4(1, 0, 0, 1));
-      mesh_box *box = new mesh_box(vec3(4));
-      scene_node *node = new scene_node();
-      app_scene->add_child(node);
-      app_scene->add_mesh_instance(new mesh_instance(node, box, red));
+      //material *red = new material(vec4(1, 0, 0, 1));
+      //mesh_box *box = new mesh_box(vec3(4));
+      //scene_node *node = new scene_node();
+      //app_scene->add_child(node);
+      //app_scene->add_mesh_instance(new mesh_instance(node, box, red));
 	  lastAIIter = clock();
     }
 
@@ -39,10 +39,10 @@ namespace octet {
     void draw_world(int x, int y, int w, int h) {
       int vx = 0, vy = 0;
       get_viewport_size(vx, vy);
-      app_scene->begin_render(vx, vy);
+      //app_scene->begin_render(vx, vy);
 
       // update matrices. assume 30 fps.
-      app_scene->update(1.0f/30);
+      //app_scene->update(1.0f/30);
 	  
 
 	  if (lastAIIter + 1000 < clock())
@@ -57,9 +57,9 @@ namespace octet {
       //app_scene->render((float)vx / vy);
 
       // tumble the box  (there is only one mesh instance)
-      scene_node *node = app_scene->get_mesh_instance(0)->get_node();
-      node->rotate(1, vec3(1, 0, 0));
-      node->rotate(1, vec3(0, 1, 0));
+      //scene_node *node = app_scene->get_mesh_instance(0)->get_node();
+      //node->rotate(1, vec3(1, 0, 0));
+      //node->rotate(1, vec3(0, 1, 0));
     }
   };
 }

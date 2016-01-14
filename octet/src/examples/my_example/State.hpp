@@ -6,25 +6,29 @@
 template <class A> class StateMachine;
 template <class A> class State {
 public:
-	State<A>() { name = "base"; }
-	virtual void execute(A* agent, StateMachine<A>* sm) {}
+	State<A>() { name = "base"; life = -1; }
+	State<A>(const int& lifeCount) { name = "base"; life = lifeCount; }
+	virtual void execute(A* agent, StateMachine<A>* sm) { if (life > 0) life--; }
 	virtual void enter(StateMachine<A>* sm) {}
 	virtual void exit(StateMachine<A>* sm) {}
 	std::string getName() { return name; }
 
 protected:
 	std::string name;
+	int life;
 };
 
 
 template <class A> class ScatterState : public State<A> {
 public:
-	ScatterState<A>() { name = "Scatter"; }
+	ScatterState<A>() { name = "Scatter"; life = -1; }
+	ScatterState<A>(const int& lifeCount) { name = "Scatter"; life = lifeCount; }
 	void execute(A* agent, StateMachine<A>* sm)
 	{
 		log("Agent is scattering !");
-		if (agent->isAttackWave())
-			sm->changeState(new AttackState<A>());
+		State<A>::execute(agent, sm);
+		if(life == 0)
+			sm->changeState(new AttackState<A>(10));
 	}
 	void enter(StateMachine<A>* sm)
 	{
@@ -40,12 +44,14 @@ private:
 
 template <class A> class AttackState : public State<A> {
 public:
-	AttackState<A>() { name = "Attack"; }
+	AttackState<A>() { name = "Attack"; life = -1; }
+	AttackState<A>(const int& lifeCount) { name = "Attack"; life = lifeCount; }
 	void execute(A* agent, StateMachine<A>* sm)
 	{
 		log("Agent is attacking !");
-		if (!agent->isAttackWave())
-			sm->changeState(new ScatterState<A>());
+		State<A>::execute(agent, sm);
+		if (life == 0)
+			sm->changeState(new ScatterState<A>(5));
 	}
 	void enter(StateMachine<A>* sm)
 	{
@@ -61,10 +67,14 @@ private:
 
 template <class A> class ScaredState : public State<A> {
 public:
-	ScaredState<A>() { name = "Scared"; }
+	ScaredState<A>() { name = "Scared"; life = -1}
+	ScaredState<A>(const int& lifeCount) { name = "Scared"; life = lifeCount; }
 	void execute(A* agent, StateMachine<A>* sm)
 	{
 		log("Agent is scared !");
+		State<A>::execute(agent, sm);
+		if (life == 0)
+			sm->exitInterrupt();
 	}
 	void enter(StateMachine<A>* sm)
 	{

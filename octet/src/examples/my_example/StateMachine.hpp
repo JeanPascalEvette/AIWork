@@ -5,6 +5,7 @@
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
 #include <conio.h>
+#include <stack>
 
 #include "State.hpp"
 
@@ -12,14 +13,14 @@ template <class A> class StateMachine {
 public:
 	StateMachine<A>() {
 		agent = nullptr;
-		currentState = new ScatterState<A>();
-		startScared = 0;
+		currentState = new ScatterState<A>(5);
+		savedStates = std::stack<State<A>*>();
 	}
 	StateMachine<A>(A* a) 
 	{ 
 		agent = a; 
-		currentState = new ScatterState<A>(); 
-		startScared = 0;
+		currentState = new ScatterState<A>(5);
+		savedStates = std::stack<State<A>*>();
 	}
 	A* getAgent() { return agent; }
 	void setAgent(A* a) { agent = a; }
@@ -35,21 +36,31 @@ public:
 	{
 		if(GetAsyncKeyState(VK_UP))
 		{
-			changeState(new ScaredState<A>());
-			startScared = clock(); 
+			startInterrupt(new ScaredState<A>(5));
 		}
 	}
 
+	void startInterrupt(State<A>* newState)
+	{
+		savedStates.push(currentState);
+		changeState(newState);
+	}
+
+	void exitInterrupt()
+	{
+		changeState(savedStates.top());
+		savedStates.pop();
+	}
+
+	//Assumed to run once per sec
 	void update() {
-		if (currentState->getName() == "Scared" && startScared + 3000 < clock())
-			changeState(new ScatterState<A>());
 		handleInputs();
 		currentState->execute(agent, this);
 	}
 private:
 	A* agent;
 	State<A>* currentState;
-	time_t startScared;
+	std::stack<State<A>*> savedStates;
 	};
 
 #endif
