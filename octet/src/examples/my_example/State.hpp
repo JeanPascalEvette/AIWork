@@ -67,7 +67,7 @@ private:
 
 template <class A> class ScaredState : public State<A> {
 public:
-	ScaredState<A>() { name = "Scared"; life = -1}
+	ScaredState<A>() { name = "Scared"; life = -1 }
 	ScaredState<A>(const int& lifeCount) { name = "Scared"; life = lifeCount; }
 	void execute(A* agent, StateMachine<A>* sm)
 	{
@@ -86,7 +86,35 @@ public:
 	}
 
 private:
-	};
+};
+
+
+template <class A> class GoHomeState : public State<A> {
+public:
+	GoHomeState<A>() { name = "GoHome"; life = -1 }
+	GoHomeState<A>(const int& lifeCount) { name = "GoHome"; life = lifeCount; }
+	void execute(A* agent, StateMachine<A>* sm)
+	{
+		log("Agent is going home !");
+		State<A>::execute(agent, sm);
+		if (life == 0)
+		{
+			sm->exitInterrupt();
+			sm->exitInterrupt();
+		}
+	}
+	void enter(StateMachine<A>* sm)
+	{
+		log("Agent starts going home!");
+	}
+	void exit(StateMachine<A>* sm)
+	{
+		log("Agent is no longer going home!");
+	}
+
+private:
+};
+
 
 void log(std::string str) {
 	std::cout << str << std::endl;

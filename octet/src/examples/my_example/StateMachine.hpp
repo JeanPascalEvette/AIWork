@@ -34,9 +34,13 @@ public:
 
 	void handleInputs()
 	{
-		if(GetAsyncKeyState(VK_UP))
+		if (GetAsyncKeyState(VK_UP))
 		{
 			startInterrupt(new ScaredState<A>(5));
+		}
+		else if (GetAsyncKeyState(VK_DOWN) && currentState->getName() == "Scared")
+		{
+			startInterrupt(new GoHomeState<A>(5));
 		}
 	}
 
