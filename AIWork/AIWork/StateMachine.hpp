@@ -34,7 +34,7 @@ public:
 
 	void handleInputs()
 	{
-		//asd
+		//asdsdf
 		if (GetAsyncKeyState(VK_UP) && currentState->getName() != "GoHome")
 		{
 			startInterrupt(new ScaredState<A>(5));
